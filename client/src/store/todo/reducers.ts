@@ -12,6 +12,10 @@ export const todoReducer: Reducer<TodoState> = (
   switch (action.type) {
     case TodoActionTypes.CREATE:
       return { todos: [...state.todos, action.payload] }
+    case TodoActionTypes.DELETE:
+      return {
+        todos: state.todos.filter((todo, index) => index !== action.payload)
+      }
     default:
       return state
   }

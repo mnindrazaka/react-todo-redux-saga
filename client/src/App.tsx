@@ -3,15 +3,21 @@ import { Formik, FormikProps, Form, Field, FormikActions } from 'formik'
 import './App.css'
 
 import { AppState } from './store'
-import { createTodo } from './store/todo/actions'
+import { createTodo, deleteTodo } from './store/todo/actions'
 import { connect } from 'react-redux'
 import { Todo } from '../../types'
 import { getTodos } from './store/todo/selectors'
 
-interface AppProps {
-  createTodo: typeof createTodo
+interface PropsFromState {
   todos: Todo[]
 }
+
+interface PropsFromDispatch {
+  createTodo: typeof createTodo
+  deleteTodo: typeof deleteTodo
+}
+
+type AppProps = PropsFromState & PropsFromDispatch
 
 interface TodoFormValues {
   name: string
@@ -73,6 +79,9 @@ class App extends Component<AppProps> {
               <p>{todo.name}</p>
               <small>{todo.description}</small>
               <p>{todo.isDone ? 'selesai' : 'belum selesai'}</p>
+              <button onClick={() => this.props.deleteTodo(index)}>
+                Delete
+              </button>
               <hr />
             </li>
           ))}
@@ -82,7 +91,7 @@ class App extends Component<AppProps> {
   }
 }
 
-const mapDispatchToProps = { createTodo }
+const mapDispatchToProps = { createTodo, deleteTodo }
 
 const mapStateToProps = (state: AppState) => ({
   todos: getTodos(state.todo)

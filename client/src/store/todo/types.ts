@@ -5,5 +5,6 @@ export interface TodoState {
 }
 
 export enum TodoActionTypes {
-  CREATE = '@@todo/CREATE'
+  CREATE = '@@todo/CREATE',
+  DELETE = '@@todo/DELETE'
 }
