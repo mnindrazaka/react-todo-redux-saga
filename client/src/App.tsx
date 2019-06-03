@@ -6,6 +6,7 @@ import { AppState } from './store'
 import { createTodo } from './store/todo/actions'
 import { connect } from 'react-redux'
 import { Todo } from '../../types'
+import { getTodos } from './store/todo/selectors'
 
 interface AppProps {
   createTodo: typeof createTodo
@@ -84,7 +85,7 @@ class App extends Component<AppProps> {
 const mapDispatchToProps = { createTodo }
 
 const mapStateToProps = (state: AppState) => ({
-  todos: state.todo.todos
+  todos: getTodos(state.todo)
 })
 
 export default connect(
