@@ -4,11 +4,6 @@ export interface TodoState {
   todos: Todo[]
 }
 
-export const CREATE_TODO = 'CREATE_TODO'
-
-interface CreateTodoAction {
-  type: string
-  payload: Todo
+export enum TodoActionTypes {
+  CREATE = '@@todo/CREATE'
 }
-
-export type TodoActionTypes = CreateTodoAction

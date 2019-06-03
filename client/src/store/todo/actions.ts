@@ -1,9 +1,5 @@
-import { TodoActionTypes, CREATE_TODO } from './types'
+import { TodoActionTypes } from './types'
 import { Todo } from '../../../../types'
+import { action } from 'typesafe-actions'
 
-export function createTodo(todo: Todo): TodoActionTypes {
-  return {
-    type: CREATE_TODO,
-    payload: todo
-  }
-}
+export const createTodo = (todo: Todo) => action(TodoActionTypes.CREATE, todo)

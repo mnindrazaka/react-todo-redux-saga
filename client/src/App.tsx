@@ -68,7 +68,12 @@ class App extends Component<AppProps> {
 
         <ol>
           {this.props.todos.map((todo, index) => (
-            <li key={index}>{todo.name}</li>
+            <li key={index}>
+              <p>{todo.name}</p>
+              <small>{todo.description}</small>
+              <p>{todo.isDone ? 'selesai' : 'belum selesai'}</p>
+              <hr />
+            </li>
           ))}
         </ol>
       </div>

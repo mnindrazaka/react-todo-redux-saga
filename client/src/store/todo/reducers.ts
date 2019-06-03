@@ -1,15 +1,16 @@
-import { TodoState, TodoActionTypes, CREATE_TODO } from './types'
+import { TodoActionTypes, TodoState } from './types'
+import { Reducer } from 'redux'
 
 const initialState: TodoState = {
   todos: []
 }
 
-export function todoReducer(
+export const todoReducer: Reducer<TodoState> = (
   state = initialState,
-  action: TodoActionTypes
-): TodoState {
+  action
+) => {
   switch (action.type) {
-    case CREATE_TODO:
+    case TodoActionTypes.CREATE:
       return { todos: [...state.todos, action.payload] }
     default:
       return state
