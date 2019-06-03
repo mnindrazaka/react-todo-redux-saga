@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
-import { Formik, FormikActions, FormikProps, Form, Field } from 'formik'
-import axios from 'axios'
+import { Formik, FormikProps, Form, Field, FormikActions } from 'formik'
 import './App.css'
 
-interface Todo {
-  name: string
-  description: string
-  isDone: boolean
+import { AppState } from './store'
+import { createTodo } from './store/todo/actions'
+import { connect } from 'react-redux'
+import { Todo } from '../../types'
+
+interface AppProps {
+  createTodo: typeof createTodo
+  todos: Todo[]
 }
 
 interface TodoFormValues {
@@ -15,35 +18,14 @@ interface TodoFormValues {
   isDone: boolean
 }
 
-interface State {
-  todos: Todo[]
-}
-
-class App extends Component<{}, State> {
-  public state = {
-    todos: [] as Todo[]
-  }
-
-  componentDidMount() {
-    this.getTodos()
-  }
-
-  getTodos = () => {
-    axios.get('http://localhost:3000/todos').then(response => {
-      this.setState({ todos: response.data })
-    })
-  }
-
+class App extends Component<AppProps> {
   createTodo = (
     values: TodoFormValues,
     actions: FormikActions<TodoFormValues>
   ) => {
-    axios
-      .post('http://localhost:3000/todos', values)
-      .then(this.getTodos)
-      .finally(() => {
-        actions.setSubmitting(false)
-      })
+    this.props.createTodo(values)
+    actions.setSubmitting(false)
+    actions.resetForm()
   }
 
   render() {
@@ -70,7 +52,11 @@ class App extends Component<{}, State> {
 
               <label>
                 Done
-                <Field name="isDone" type="checkbox" />
+                <Field
+                  name="isDone"
+                  type="checkbox"
+                  checked={formikBag.values.isDone}
+                />
               </label>
 
               <button type="submit" disabled={formikBag.isSubmitting}>
@@ -81,7 +67,7 @@ class App extends Component<{}, State> {
         />
 
         <ol>
-          {this.state.todos.map((todo, index) => (
+          {this.props.todos.map((todo, index) => (
             <li key={index}>{todo.name}</li>
           ))}
         </ol>
@@ -90,4 +76,13 @@ class App extends Component<{}, State> {
   }
 }
 
-export default App
+const mapDispatchToProps = { createTodo }
+
+const mapStateToProps = (state: AppState) => ({
+  todos: state.todo.todos
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)

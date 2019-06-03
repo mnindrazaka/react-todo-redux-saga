@@ -1,12 +1,7 @@
 import express, { Request, Response } from 'express'
+import { Todo } from '../types'
 import cors from 'cors'
 const app = express()
-
-interface Todo {
-  name: string
-  description: string
-  isDone: boolean
-}
 
 let todos: Todo[] = [
   {
