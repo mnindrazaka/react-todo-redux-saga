@@ -1,6 +1,6 @@
 import { all, fork } from 'redux-saga/effects'
-import todoSaga from './todo/sagas'
+import tasksSaga from './tasks/sagas'
 
 export function* rootSaga() {
-  yield all([fork(todoSaga)])
+  yield all([fork(tasksSaga)])
 }

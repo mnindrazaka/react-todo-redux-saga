@@ -1,17 +1,19 @@
 import React, { Component } from 'react'
 import { Formik, FormikProps, Form, Field, FormikActions } from 'formik'
 import {
-  createTodo,
-  deleteTodo,
-  fetchRequestTodo
-} from '../../store/todo/actions'
-import { Todo } from '../../../../types'
+  createTasks,
+  deleteTasks,
+  fetchTasksRequest
+} from '../../stores/tasks/actions'
+import { Task } from '../../../../types'
 
 interface TodolistProps {
-  todos: Todo[]
-  fetchRequestTodo: typeof fetchRequestTodo
-  createTodo: typeof createTodo
-  deleteTodo: typeof deleteTodo
+  tasks: Task[]
+  loading: boolean
+  error: string
+  fetchTasksRequest: typeof fetchTasksRequest
+  createTasks: typeof createTasks
+  deleteTasks: typeof deleteTasks
 }
 
 interface TodolistFormValues {
@@ -22,14 +24,14 @@ interface TodolistFormValues {
 
 export default class Todolist extends Component<TodolistProps> {
   componentDidMount() {
-    this.props.fetchRequestTodo()
+    this.props.fetchTasksRequest()
   }
 
-  createTodo = (
+  createTasks = (
     values: TodolistFormValues,
     actions: FormikActions<TodolistFormValues>
   ) => {
-    this.props.createTodo(values)
+    this.props.createTasks(values)
     actions.setSubmitting(false)
     actions.resetForm()
   }
@@ -39,7 +41,7 @@ export default class Todolist extends Component<TodolistProps> {
       <div>
         <Formik
           initialValues={{ name: '', description: '', isDone: false }}
-          onSubmit={this.createTodo}
+          onSubmit={this.createTasks}
           render={(formikBag: FormikProps<TodolistFormValues>) => (
             <Form>
               <label>
@@ -72,19 +74,26 @@ export default class Todolist extends Component<TodolistProps> {
           )}
         />
 
-        <ol>
-          {this.props.todos.map((todo, index) => (
-            <li key={index}>
-              <p>{todo.name}</p>
-              <small>{todo.description}</small>
-              <p>{todo.isDone ? 'selesai' : 'belum selesai'}</p>
-              <button onClick={() => this.props.deleteTodo(index)}>
-                Delete
-              </button>
-              <hr />
-            </li>
-          ))}
-        </ol>
+        {this.props.loading ? (
+          <p>loading</p>
+        ) : (
+          <>
+            {this.props.error}
+            <ol>
+              {this.props.tasks.map((task, index) => (
+                <li key={index}>
+                  <p>{task.name}</p>
+                  <small>{task.description}</small>
+                  <p>{task.isDone ? 'selesai' : 'belum selesai'}</p>
+                  <button onClick={() => this.props.deleteTasks(index)}>
+                    Delete
+                  </button>
+                  <hr />
+                </li>
+              ))}
+            </ol>
+          </>
+        )}
       </div>
     )
   }

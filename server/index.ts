@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express'
-import { Todo } from '../types'
+import { Task } from '../types'
 import cors from 'cors'
 const app = express()
 
-let todos: Todo[] = [
+let tasks: Task[] = [
   {
     name: 'Doing something',
     description: 'something todo',
@@ -18,23 +18,23 @@ app.get('/', (req: Request, res: Response) => {
   res.send('todo server')
 })
 
-app.get('/todos', (req: Request, res: Response) => {
-  res.send(todos)
+app.get('/tasks', (req: Request, res: Response) => {
+  res.send(tasks)
 })
 
-app.post('/todos', (req: Request, res: Response) => {
-  todos.push(req.body)
-  res.send(todos)
+app.post('/tasks', (req: Request, res: Response) => {
+  tasks.push(req.body)
+  res.send(req.body)
 })
 
-app.put('/todos/:index', (req: Request, res: Response) => {
-  todos[req.params.index] = req.body
-  res.send(todos)
+app.put('/tasks/:index', (req: Request, res: Response) => {
+  tasks[req.params.index] = req.body
+  res.send(req.body)
 })
 
-app.delete('/todos/:index', (req: Request, res: Response) => {
-  todos = todos.filter((todo, index) => index != req.params.index)
-  res.send(todos)
+app.delete('/tasks/:index', (req: Request, res: Response) => {
+  tasks = tasks.filter((todo, index) => index != req.params.index)
+  res.send(req.body)
 })
 
 app.listen(3000, () => {
