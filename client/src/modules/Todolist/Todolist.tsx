@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Formik, FormikProps, Form, Field, FormikActions } from 'formik'
 import {
-  createTasks,
   deleteTasks,
-  fetchTasksRequest
+  fetchTasksRequest,
+  createTasksRequest
 } from '../../stores/tasks/actions'
 import { Task } from '../../../../types'
 
@@ -12,7 +12,7 @@ interface TodolistProps {
   loading: boolean
   error: string
   fetchTasksRequest: typeof fetchTasksRequest
-  createTasks: typeof createTasks
+  createTasksRequest: typeof createTasksRequest
   deleteTasks: typeof deleteTasks
 }
 
@@ -31,8 +31,7 @@ export default class Todolist extends Component<TodolistProps> {
     values: TodolistFormValues,
     actions: FormikActions<TodolistFormValues>
   ) => {
-    this.props.createTasks(values)
-    actions.setSubmitting(false)
+    this.props.createTasksRequest(values)
     actions.resetForm()
   }
 
@@ -67,7 +66,7 @@ export default class Todolist extends Component<TodolistProps> {
                 />
               </label>
 
-              <button type="submit" disabled={formikBag.isSubmitting}>
+              <button type="submit" disabled={this.props.loading}>
                 Submit
               </button>
             </Form>

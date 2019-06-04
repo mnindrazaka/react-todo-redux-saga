@@ -10,7 +10,14 @@ export const fetchTasksSuccess = (tasks: Task[]) =>
 export const fetchTasksError = (message: string) =>
   action(TasksActionTypes.FETCH_ERROR, message)
 
-export const createTasks = (todo: Task) => action(TasksActionTypes.CREATE, todo)
+export const createTasksRequest = (todo: Task) =>
+  action(TasksActionTypes.CREATE_REQUEST, todo)
+
+export const createTasksSuccess = (todo: Task) =>
+  action(TasksActionTypes.CREATE_SUCCESS, todo)
+
+export const createTasksError = (message: string) =>
+  action(TasksActionTypes.CREATE_SUCCESS, message)
 
 export const deleteTasks = (index: number) =>
   action(TasksActionTypes.DELETE, index)

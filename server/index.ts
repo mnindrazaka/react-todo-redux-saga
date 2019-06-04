@@ -23,6 +23,7 @@ app.get('/tasks', (req: Request, res: Response) => {
 })
 
 app.post('/tasks', (req: Request, res: Response) => {
+  console.log('body', req.body)
   tasks.push(req.body)
   res.send(req.body)
 })
