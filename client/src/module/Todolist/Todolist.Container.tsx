@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
-import { createTodo, deleteTodo } from '../../store/todo/actions'
+import {
+  createTodo,
+  deleteTodo,
+  fetchRequestTodo
+} from '../../store/todo/actions'
 import { Todo } from '../../../../types'
 import { AppState } from '../../store'
 import { getTodos } from '../../store/todo/selectors'
@@ -11,6 +15,7 @@ interface PropsFromState {
 }
 
 interface PropsFromDispatch {
+  fetchRequestTodo: typeof fetchRequestTodo
   createTodo: typeof createTodo
   deleteTodo: typeof deleteTodo
 }
@@ -23,7 +28,7 @@ class TodolistContainer extends Component<TodolistContainerProps> {
   }
 }
 
-const mapDispatchToProps = { createTodo, deleteTodo }
+const mapDispatchToProps = { createTodo, deleteTodo, fetchRequestTodo }
 
 const mapStateToProps = (state: AppState) => ({
   todos: getTodos(state.todo)

@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
 import { Formik, FormikProps, Form, Field, FormikActions } from 'formik'
-import { createTodo, deleteTodo } from '../../store/todo/actions'
+import {
+  createTodo,
+  deleteTodo,
+  fetchRequestTodo
+} from '../../store/todo/actions'
 import { Todo } from '../../../../types'
 
 interface TodolistProps {
   todos: Todo[]
+  fetchRequestTodo: typeof fetchRequestTodo
   createTodo: typeof createTodo
   deleteTodo: typeof deleteTodo
 }
@@ -16,6 +21,10 @@ interface TodolistFormValues {
 }
 
 export default class Todolist extends Component<TodolistProps> {
+  componentDidMount() {
+    this.props.fetchRequestTodo()
+  }
+
   createTodo = (
     values: TodolistFormValues,
     actions: FormikActions<TodolistFormValues>
