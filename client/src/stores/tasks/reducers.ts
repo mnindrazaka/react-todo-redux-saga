@@ -29,21 +29,14 @@ const loading: Reducer<TasksState['loading']> = (
 ) => {
   switch (action.type) {
     case TasksActionTypes.FETCH_REQUEST:
-      return true
-    case TasksActionTypes.FETCH_SUCCESS:
-      return false
-    case TasksActionTypes.FETCH_ERROR:
-      return false
     case TasksActionTypes.CREATE_REQUEST:
-      return true
-    case TasksActionTypes.CREATE_SUCCESS:
-      return false
-    case TasksActionTypes.CREATE_ERROR:
-      return false
     case TasksActionTypes.DELETE_REQUEST:
       return true
+    case TasksActionTypes.FETCH_SUCCESS:
+    case TasksActionTypes.FETCH_ERROR:
+    case TasksActionTypes.CREATE_SUCCESS:
+    case TasksActionTypes.CREATE_ERROR:
     case TasksActionTypes.DELETE_SUCCESS:
-      return false
     case TasksActionTypes.DELETE_ERROR:
       return false
     default:
@@ -57,9 +50,7 @@ const error: Reducer<TasksState['error']> = (
 ) => {
   switch (action.type) {
     case TasksActionTypes.FETCH_ERROR:
-      return action.payload
     case TasksActionTypes.CREATE_ERROR:
-      return action.payload
     case TasksActionTypes.DELETE_ERROR:
       return action.payload
     default:
