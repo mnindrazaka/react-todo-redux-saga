@@ -16,7 +16,7 @@ const tasks: Reducer<TasksState['tasks']> = (
       return action.payload
     case TasksActionTypes.CREATE_SUCCESS:
       return [...state, action.payload]
-    case TasksActionTypes.DELETE:
+    case TasksActionTypes.DELETE_SUCCESS:
       return state.filter((task, index) => index !== action.payload)
     default:
       return state
@@ -40,6 +40,12 @@ const loading: Reducer<TasksState['loading']> = (
       return false
     case TasksActionTypes.CREATE_ERROR:
       return false
+    case TasksActionTypes.DELETE_REQUEST:
+      return true
+    case TasksActionTypes.DELETE_SUCCESS:
+      return false
+    case TasksActionTypes.DELETE_ERROR:
+      return false
     default:
       return state
   }
@@ -53,6 +59,8 @@ const error: Reducer<TasksState['error']> = (
     case TasksActionTypes.FETCH_ERROR:
       return action.payload
     case TasksActionTypes.CREATE_ERROR:
+      return action.payload
+    case TasksActionTypes.DELETE_ERROR:
       return action.payload
     default:
       return state

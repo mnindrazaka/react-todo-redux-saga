@@ -15,5 +15,7 @@ export enum TasksActionTypes {
   CREATE_SUCCESS = '@@tasks/CREATE_SUCCESS',
   CREATE_ERROR = '@@tasks/CREATE_ERROR',
 
-  DELETE = '@@tasks/DELETE'
+  DELETE_REQUEST = '@@tasks/DELETE_REQUEST',
+  DELETE_SUCCESS = '@@tasks/DELETE_SUCCESS',
+  DELETE_ERROR = '@@tasks/DELETE_ERROR'
 }

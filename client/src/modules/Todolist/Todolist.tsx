@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Formik, FormikProps, Form, Field, FormikActions } from 'formik'
 import {
-  deleteTasks,
+  deleteTasksRequest,
   fetchTasksRequest,
   createTasksRequest
 } from '../../stores/tasks/actions'
@@ -13,7 +13,7 @@ interface TodolistProps {
   error: string
   fetchTasksRequest: typeof fetchTasksRequest
   createTasksRequest: typeof createTasksRequest
-  deleteTasks: typeof deleteTasks
+  deleteTasksRequest: typeof deleteTasksRequest
 }
 
 interface TodolistFormValues {
@@ -84,7 +84,7 @@ export default class Todolist extends Component<TodolistProps> {
                   <p>{task.name}</p>
                   <small>{task.description}</small>
                   <p>{task.isDone ? 'selesai' : 'belum selesai'}</p>
-                  <button onClick={() => this.props.deleteTasks(index)}>
+                  <button onClick={() => this.props.deleteTasksRequest(index)}>
                     Delete
                   </button>
                   <hr />

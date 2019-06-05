@@ -19,5 +19,11 @@ export const createTasksSuccess = (todo: Task) =>
 export const createTasksError = (message: string) =>
   action(TasksActionTypes.CREATE_SUCCESS, message)
 
-export const deleteTasks = (index: number) =>
-  action(TasksActionTypes.DELETE, index)
+export const deleteTasksRequest = (index: number) =>
+  action(TasksActionTypes.DELETE_REQUEST, index)
+
+export const deleteTasksSuccess = (index: number) =>
+  action(TasksActionTypes.DELETE_SUCCESS, index)
+
+export const deleteTasksError = (message: string) =>
+  action(TasksActionTypes.DELETE_ERROR, message)

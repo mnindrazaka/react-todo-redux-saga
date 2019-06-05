@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-  deleteTasks,
+  deleteTasksRequest,
   fetchTasksRequest,
   createTasksRequest
 } from '../../stores/tasks/actions'
@@ -19,7 +19,7 @@ interface PropsFromState {
 interface PropsFromDispatch {
   fetchTasksRequest: typeof fetchTasksRequest
   createTasksRequest: typeof createTasksRequest
-  deleteTasks: typeof deleteTasks
+  deleteTasksRequest: typeof deleteTasksRequest
 }
 
 type TodolistContainerProps = PropsFromState & PropsFromDispatch
@@ -32,7 +32,7 @@ class TodolistContainer extends Component<TodolistContainerProps> {
 
 const mapDispatchToProps = {
   createTasksRequest,
-  deleteTasks,
+  deleteTasksRequest,
   fetchTasksRequest
 }
 

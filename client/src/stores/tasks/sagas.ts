@@ -4,7 +4,9 @@ import {
   fetchTasksSuccess,
   fetchTasksError,
   createTasksSuccess,
-  createTasksError
+  createTasksError,
+  deleteTasksSuccess,
+  deleteTasksError
 } from './actions'
 import { TasksActionTypes } from './types'
 import { AnyAction } from 'redux'
@@ -37,6 +39,16 @@ function* handleCreate(action: AnyAction) {
   }
 }
 
+function* handleDelete(action: AnyAction) {
+  try {
+    yield call(callApi, 'delete', API_ENDPOINT, `/tasks/${action.payload}`)
+    yield put(deleteTasksSuccess(action.payload))
+  } catch (error) {
+    if (error instanceof Error) yield put(deleteTasksError(error.message))
+    else yield put(deleteTasksError('unknown error'))
+  }
+}
+
 function* watchFetchRequest() {
   yield takeEvery(TasksActionTypes.FETCH_REQUEST, handleFetch)
 }
@@ -45,8 +57,16 @@ function* watchCreateRequest() {
   yield takeEvery(TasksActionTypes.CREATE_REQUEST, handleCreate)
 }
 
+function* watchDeleteRequest() {
+  yield takeEvery(TasksActionTypes.DELETE_REQUEST, handleDelete)
+}
+
 function* tasksSaga() {
-  yield all([fork(watchFetchRequest), fork(watchCreateRequest)])
+  yield all([
+    fork(watchFetchRequest),
+    fork(watchCreateRequest),
+    fork(watchDeleteRequest)
+  ])
 }
 
 export default tasksSaga
