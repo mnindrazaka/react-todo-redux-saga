@@ -1,5 +1,13 @@
 import React, { Component } from 'react'
-import { Formik, FormikProps, Form, Field, FormikActions } from 'formik'
+import {
+  Formik,
+  FormikProps,
+  Form,
+  Field,
+  FormikActions,
+  ErrorMessage
+} from 'formik'
+import * as yup from 'yup'
 import {
   deleteTasksRequest,
   fetchTasksRequest,
@@ -22,6 +30,11 @@ interface TodolistFormValues {
   isDone: boolean
 }
 
+const todolistValidationSchema = yup.object().shape({
+  name: yup.string().required(),
+  description: yup.string().required()
+})
+
 export default class Todolist extends Component<TodolistProps> {
   componentDidMount() {
     this.props.fetchTasksRequest()
@@ -41,11 +54,13 @@ export default class Todolist extends Component<TodolistProps> {
         <Formik
           initialValues={{ name: '', description: '', isDone: false }}
           onSubmit={this.createTasks}
+          validationSchema={todolistValidationSchema}
           render={(formikBag: FormikProps<TodolistFormValues>) => (
             <Form>
               <label>
                 Name
                 <Field name="name" type="text" placeholder="Name" />
+                <ErrorMessage name="name">{msg => <p>{msg}</p>}</ErrorMessage>
               </label>
 
               <label>
@@ -55,6 +70,9 @@ export default class Todolist extends Component<TodolistProps> {
                   type="text"
                   placeholder="Description"
                 />
+                <ErrorMessage name="description">
+                  {msg => <p>{msg}</p>}
+                </ErrorMessage>
               </label>
 
               <label>
