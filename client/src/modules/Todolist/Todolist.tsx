@@ -1,12 +1,6 @@
 import React, { Component } from 'react'
-import {
-  Formik,
-  FormikProps,
-  Form,
-  Field,
-  FormikActions,
-  ErrorMessage
-} from 'formik'
+import { Form, Field } from 'react-final-form'
+
 import * as yup from 'yup'
 import {
   deleteTasksRequest,
@@ -14,6 +8,7 @@ import {
   createTasksRequest
 } from '../../stores/tasks/actions'
 import { Task } from '../../../../types'
+import { setIn, FormApi } from 'final-form'
 
 interface TodolistProps {
   tasks: Task[]
@@ -30,7 +25,7 @@ interface TodolistFormValues {
   isDone: boolean
 }
 
-const todolistValidationSchema = yup.object().shape({
+const schema = yup.object({
   name: yup.string().required(),
   description: yup.string().required()
 })
@@ -42,52 +37,69 @@ export default class Todolist extends Component<TodolistProps> {
 
   createTasks = (
     values: TodolistFormValues,
-    actions: FormikActions<TodolistFormValues>
+    form: FormApi<TodolistFormValues>
   ) => {
     this.props.createTasksRequest(values)
-    actions.resetForm()
+    setTimeout(form.reset)
   }
 
   render() {
     return (
       <div>
-        <Formik
+        <Form<TodolistFormValues>
           initialValues={{ name: '', description: '', isDone: false }}
           onSubmit={this.createTasks}
-          validationSchema={todolistValidationSchema}
-          render={(formikBag: FormikProps<TodolistFormValues>) => (
-            <Form>
-              <label>
-                Name
-                <Field name="name" type="text" placeholder="Name" />
-                <ErrorMessage name="name">{msg => <p>{msg}</p>}</ErrorMessage>
-              </label>
+          validate={async values => {
+            try {
+              await schema.validate(values, { abortEarly: false })
+            } catch (e) {
+              return e.inner.reduce((errors: any, error: any) => {
+                return setIn(errors, error.path, error.message)
+              }, {})
+            }
+          }}
+          render={({ handleSubmit, values }) => (
+            <form onSubmit={handleSubmit}>
+              <div>
+                <Field name="name">
+                  {({ input, meta }) => (
+                    <div>
+                      <label>Name</label>
+                      <input type="text" {...input} placeholder="Name" />
+                      {meta.touched && meta.error && <span>{meta.error}</span>}
+                    </div>
+                  )}
+                </Field>
+              </div>
 
-              <label>
-                Description
-                <Field
-                  name="description"
-                  type="text"
-                  placeholder="Description"
-                />
-                <ErrorMessage name="description">
-                  {msg => <p>{msg}</p>}
-                </ErrorMessage>
-              </label>
+              <div>
+                <Field name="description">
+                  {({ input, meta }) => (
+                    <div>
+                      <label>Description</label>
+                      <input type="text" {...input} placeholder="Description" />
+                      {meta.touched && meta.error && <span>{meta.error}</span>}
+                    </div>
+                  )}
+                </Field>
+              </div>
 
-              <label>
-                Done
-                <Field
-                  name="isDone"
-                  type="checkbox"
-                  checked={formikBag.values.isDone}
-                />
-              </label>
+              <div>
+                <label>
+                  Done
+                  <Field
+                    name="isDone"
+                    component="input"
+                    type="checkbox"
+                    checked={values.isDone}
+                  />
+                </label>
+              </div>
 
               <button type="submit" disabled={this.props.loading}>
                 Submit
               </button>
-            </Form>
+            </form>
           )}
         />
 
